@@ -3,6 +3,12 @@ let gameBoard=(function(){
                 [null,null,null],
                 [null,null,null]];
     
+    function _resetBoard(){
+        board=[ [null,null,null],
+                [null,null,null],
+                [null,null,null]];
+    }
+
     function _testWinRow(indexRow){
         if(board[indexRow][0]!=null&&
             board[indexRow][1]!=null&&
@@ -60,16 +66,22 @@ let gameBoard=(function(){
                 _testWinDiagonal());
     }
 
-    function setBoardValue(indexRow,indexColumn,value){
-        board[indexRow][indexColumn]=value;
+    function setBoardSymbol(indexRow,indexColumn,symbol){
+        board[indexRow][indexColumn]=symbol;
         if(_testWin(indexRow,indexColumn)){
-            console.log("WIN!");
+            let gameResult={
+                winningSymbol : symbol,
+                finalBoard : board
+            }
+            _resetBoard();
+            return gameResult;
         }
+        return false;
     }
 
     return{
         board : board,
-        setBoardValue : setBoardValue
+        setBoardSymbol : setBoardSymbol
     };
 })();
 
@@ -92,3 +104,31 @@ function player(symbolValue,nameValue){
 
 let player1=player("X","player1");
 let player2=player("O","player2");
+
+(function playGame(){
+    let gameEnd=false;
+    let currentPlayer=true // true = player1 and false = player1
+    let CurrentSymbol;
+    let stringIndex;
+    let indexRow;
+    let indexColumn;
+    while(gameEnd==false){
+        if(currentPlayer){
+            stringIndex=prompt("where to put the : X");
+            indexRow=Number(stringIndex.charAt(0));
+            indexColumn=Number(stringIndex.charAt(1));
+            gameEnd=gameBoard.setBoardSymbol(indexRow,indexColumn,'X');
+        }else{
+            stringIndex=prompt("where to put the : O");
+            indexRow=Number(stringIndex.charAt(0));
+            indexColumn=Number(stringIndex.charAt(1));
+            gameEnd=gameBoard.setBoardSymbol(indexRow,indexColumn,'O');
+        }
+        currentPlayer=!currentPlayer;
+    }
+    if(gameEnd.winningSymbol=='X'){
+        alert("player1 wins");
+    }else{
+        alert("player2 wins");
+    }
+})();
