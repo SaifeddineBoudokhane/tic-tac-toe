@@ -66,17 +66,39 @@ let gameBoard=(function(){
                 _testWinDiagonal());
     }
 
+    function _testBoardFull(){
+        for(let i=0;i<3;i++){
+            for(let j=0;j<3;j++){
+                if(board[i][j]==null){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     function setBoardSymbol(indexRow,indexColumn,symbol){
         board[indexRow][indexColumn]=symbol;
         if(_testWin(indexRow,indexColumn)){
             let gameResult={
+                result: "Win",
                 winningSymbol : symbol,
                 finalBoard : board
             }
             _resetBoard();
             return gameResult;
+        }else{
+            if(_testBoardFull()){
+                let gameResult={
+                    result: "Tie",
+                    winningSymbol : null,
+                    finalBoard : board
+                }
+                _resetBoard();
+                return gameResult;
+            }
+            return false;
         }
-        return false;
     }
 
     return{
@@ -128,7 +150,9 @@ let player2=player("O","player2");
     }
     if(gameEnd.winningSymbol=='X'){
         alert("player1 wins");
-    }else{
+    }else if(gameEnd.winningSymbol=='O'){
         alert("player2 wins");
+    }else{
+        alert("TIE!")
     }
 })();
