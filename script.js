@@ -214,4 +214,5 @@
     const gameButtonStart=document.getElementById("game-start");
     gameButtonStart.addEventListener("click",playGame.startGame);
     const domGameResult=document.getElementById("game-result");
+    playGame.startGame();
 })();
