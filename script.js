@@ -1,5 +1,84 @@
 (function(){
-    let gameBoard=(function(){
+
+    const domManipulation=(function(){
+        //Game DOM
+        const page=document.querySelector("body");
+        const player1NameDisplay=document.getElementById("player1-name-display");
+        const player2NameDisplay=document.getElementById("player2-name-display");
+        const player1ScoreDisplay=document.getElementById("player1-score");
+        const player2ScoreDisplay=document.getElementById("player2-score");
+        const domGameResult=document.getElementById("round-result");
+        const gameButtonRestart=document.getElementById("game-restart");
+        const gameButtonRestartNew=document.getElementById("game-new-restart");
+
+        //Dialog New Game DOM
+        const dialogNewGame=document.getElementById("pop-up");
+        const form=document.getElementById("form-new-game");
+        const player1NameInput=document.getElementById("player1-name-input");
+        const player2NameInput=document.getElementById("player2-name-input");
+        const roundsInput=document.getElementById("rounds");
+        const gameButtonStartNew=document.getElementById("game-start");
+        //Div Announce Winner
+        const divDisplayWinner=document.getElementById("display-winner");
+
+
+        gameButtonRestart.addEventListener("click",()=>playGame.startGame(Number(roundsInput.value)));
+        gameButtonRestartNew.addEventListener("click",startNewGame);
+        gameButtonStartNew.addEventListener("click",()=>{
+            if(form.checkValidity()){
+                player1.setName(player1NameInput.value.toUpperCase());
+                player2.setName(player2NameInput.value.toUpperCase());
+                dialogNewGame.close();
+                changeTextContent(player1NameDisplay,player1.getName());
+                changeTextContent(player2NameDisplay,player2.getName());
+                page.classList.remove("blur");
+                playGame.startGame(Number(roundsInput.value));
+            }
+        });
+
+        divDisplayWinner.addEventListener("click",()=>{
+            divDisplayWinner.classList.remove("display-on");
+            divDisplayWinner.classList.add("display-off");
+        })
+
+        startNewGame();
+
+        function startNewGame(){
+            dialogNewGame.showModal();
+            page.classList.add("blur")
+        }
+
+        function changeTextContent(element,content){
+            element.textContent=content;
+        }
+        function displayRoundResult(content){
+            domGameResult.textContent=content;
+        }
+        function renderScores(){
+            changeTextContent(player1ScoreDisplay,player1.getScore());
+            changeTextContent(player2ScoreDisplay,player2.getScore());
+        }
+        function announceWinner(){
+            if(player1.getScore()>player2.getScore()){
+                changeTextContent(divDisplayWinner.querySelector(".text"),`${player1.getName()} WINS!`);
+            }else if(player1.getScore()<player2.getScore()){
+                    changeTextContent(divDisplayWinner.querySelector(".text"),`${player2.getName()} WINS!`);
+                }else{
+                    changeTextContent(divDisplayWinner.querySelector(".text"),"IT WAS A TIE!");
+                }
+            divDisplayWinner.classList.add("display-on");
+            divDisplayWinner.classList.remove("display-off");
+        }
+
+        return{
+            displayRoundResult:displayRoundResult,
+            changeTextContent:changeTextContent,
+            renderScores:renderScores,
+            announceWinner:announceWinner
+        }
+    })();
+
+    const gameBoard=(function(){
         let board=[ [null,null,null],
                     [null,null,null],
                     [null,null,null]];
@@ -99,25 +178,43 @@
         };
     })();
 
-    let playGame=(function(){
+    const playGame=(function(){
         const board=document.querySelectorAll(".cell");
         let currentSymbol=null;
-        let gameResult=null;
+        let roundResult=null;
+        let maxRound;
+        let currentRound;
 
-        function startGame(){
-            board.forEach(element=>{
-                element.textContent="";
-                _removeClickEvent(element);
-            })
+        function startGame(newMaxRound){
+            maxRound=newMaxRound;
+            currentRound=1;
+            _emptyBoard();
+            _removeAllClickEvents();
             _addClickEvents();
             setSymbol("X");
-            domGameResult.textContent="";
+            player1.restartScore();
+            player1.setSymbol("X");
+            player2.restartScore();
+            player2.setSymbol("O");
+            domManipulation.renderScores();
+            domManipulation.displayRoundResult("Last Round's Result");
+        }
+        function _endRound(){
+            _incrementRound();
+            if(!_checkGameEnd()){
+                _emptyBoard();
+                _removeAllClickEvents();
+                _addClickEvents();
+                setSymbol("X");
+            }else{
+                _endGame();
+            }
+            
         }
         function _endGame(){
-            board.forEach(element=>{
-                _removeClickEvent(element);
-            })
+            _removeAllClickEvents();
             setSymbol(null);
+            domManipulation.announceWinner();
         }
 
         function _addClickEvents(){
@@ -126,37 +223,76 @@
             })
         }
 
+        function _incrementRound(){
+            currentRound++;
+        }
+
+        function _checkGameEnd(){
+            if(currentRound<=maxRound){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        function _emptyBoard(){
+            board.forEach(element=>{
+                domManipulation.changeTextContent(element,"");
+            })
+        }
+        function _removeAllClickEvents(){
+            board.forEach(element=>{
+                _removeClickEvent(element);
+            })
+        }
         function _removeClickEvent(element){
             element.removeEventListener("click",_setElementContent)
         }
 
         function _setElementContent(event){
             if(currentSymbol!=null){
-                event.target.textContent=currentSymbol;
+                domManipulation.changeTextContent(event.target,currentSymbol);
                 _removeClickEvent(event.target)
                 const indexRow=event.target.id.charAt(4);
                 const indexColumn=event.target.id.charAt(5);
-                gameResult=gameBoard.setBoardSymbol(indexRow,indexColumn,currentSymbol);
+                roundResult=gameBoard.setBoardSymbol(indexRow,indexColumn,currentSymbol);
                 _switchSymbol();
-                _checkGameEnd();
+                _checkRoundEnd();
             }
         }
 
-        function _checkGameEnd(){
-            switch(gameResult){
+        function _checkRoundEnd(){
+            switch(roundResult){
                 case null:
                     break;
                 case "tie":
-                    domGameResult.textContent="It was a tie";
-                    _endGame();
+                    domManipulation.displayRoundResult("It was a tied Round");
+                    _switchPlayersSymbol();
+                    _endRound();
                     break;
                 case "X":
-                    domGameResult.textContent="player1 won : X";
-                    _endGame();
+                    if(player1.getSymbol()==roundResult){
+                        domManipulation.displayRoundResult("Player 1 Won! the last Round");
+                        player1.incrementScore();
+                    }else{
+                        domManipulation.displayRoundResult("Player 2 Won! the last Round");
+                        player2.incrementScore();
+                    }
+                    domManipulation.renderScores();
+                    _switchPlayersSymbol();
+                    _endRound();
                     break;
                 case "O":
-                    domGameResult.textContent="player2 won : O";
-                    _endGame();
+                    if(player1.getSymbol()==roundResult){
+                        domManipulation.displayRoundResult("Player 1 Won! the last Round");
+                        player1.incrementScore();
+                    }else{
+                        domManipulation.displayRoundResult("Player 2 Won! the last Round");
+                        player2.incrementScore();
+                    }
+                    domManipulation.renderScores();
+                    _switchPlayersSymbol();
+                    _endRound();
                     break;
                 default:
                     console.log("error");
@@ -173,6 +309,12 @@
             }
         }
 
+        function _switchPlayersSymbol(){
+            let symbol=player1.getSymbol();
+            player1.setSymbol(player2.getSymbol());
+            player2.setSymbol(symbol);
+        }
+
         function setSymbol(symbol){
             if(symbol!="X"&&symbol!="O"){
                 currentSymbol=null;
@@ -187,32 +329,44 @@
         }
     }());
 
-    function player(symbolValue,nameValue){
-        const symbol=symbolValue;
-        const name=nameValue;
+    function player(){
+        let symbol;
+        let name;
+        let score=0;
 
+        function setName(newName){
+            name=newName;
+        }
+        function setSymbol(newSymbol){
+            symbol=newSymbol;
+        }
+        function incrementScore(){
+            score++;
+        }
         function getSymbol(){
             return symbol;
         }
-        
         function getName(){
             return name;
         }
-
-        function setName(name){
-            this.name=name;
+        function getScore(){
+            return score;
+        }
+        function restartScore(){
+            score=0;
         }
         return{
+            setName : setName,
+            setSymbol : setSymbol,
+            incrementScore : incrementScore,
+            getName : getName,
             getSymbol : getSymbol,
-            getName : getName
+            getScore : getScore,
+            restartScore : restartScore
         }
     }
 
-    let player1=player("X","player1");
-    let player2=player("O","player2");
+    let player1=player();
+    let player2=player();
 
-    const gameButtonStart=document.getElementById("game-start");
-    gameButtonStart.addEventListener("click",playGame.startGame);
-    const domGameResult=document.getElementById("game-result");
-    playGame.startGame();
 })();

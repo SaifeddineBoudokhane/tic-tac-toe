@@ -18,22 +18,51 @@
     <div class="title">
         <h1>TIC TAC TOE</h1>
     </div>
-    <div id="board">
-        <div class="cell" id="cell00"></div>
-        <div class="cell" id="cell01"></div>
-        <div class="cell" id="cell02"></div>
-        <div class="cell" id="cell10"></div>
-        <div class="cell" id="cell11"></div>
-        <div class="cell" id="cell12"></div>
-        <div class="cell" id="cell20"></div>
-        <div class="cell" id="cell21"></div>
-        <div class="cell" id="cell22"></div>
+    
+    <dialog id="pop-up">
+        <form onsubmit="event.preventDefault()" id="form-new-game">
+            <h2>New Game Info</h2>
+            <label for="player1-name">Player 1:</label>
+            <input type="text" id="player1-name-input" name="player2-name" required maxlength="10" placeholder="name player 1" autocomplete="off" value="Player1">
+            <label for="player1-name">Player 2:</label>
+            <input type="text" id="player2-name-input" name="player2-name" required maxlength="10" placeholder="name player 2" autocomplete="off" value="Player2">
+            <label for="rounds">First To Reach:</label>
+            <input type="number" id="rounds" name="rounds" required min="1" max="10" value="1">
+            <input type="submit" id="game-start" value="New Game">
+        </form>
+    </dialog>
+
+    <div id="main">
+        <div id="display">
+            <div id="scores">
+                <div class="player1 player">
+                    <p id="player1-name-display">PLAYER2</p>
+                    <p class="score" id="player1-score">0</p>
+                </div>
+                <div class="player2 player">
+                    <p id="player2-name-display">PLAYER1</p>
+                    <p class="score" id="player2-score">0</p>
+                </div>
+            </div>
+            <p id="round-result">Last Round's Result</p>
+            <button id="game-restart" class="restart-button">Restart This Game</button>
+            <button id="game-new-restart" class="restart-button">Restart New Game</button>
+        </div>
+        <div id="board">
+            <div class="cell" id="cell00"></div>
+            <div class="cell" id="cell01"></div>
+            <div class="cell" id="cell02"></div>
+            <div class="cell" id="cell10"></div>
+            <div class="cell" id="cell11"></div>
+            <div class="cell" id="cell12"></div>
+            <div class="cell" id="cell20"></div>
+            <div class="cell" id="cell21"></div>
+            <div class="cell" id="cell22"></div>
+        </div>
+        
     </div>
-    <div id="controller">
-        <button id="game-start">Start Game</button>
-    </div>
-    <div>
-        <h2 id="game-result"></h2>
+    <div id="display-winner" class="display-off">
+        <h1 class="text"></h1>
     </div>
 </body>
 </html>

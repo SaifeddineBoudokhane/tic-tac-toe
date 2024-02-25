@@ -3,39 +3,97 @@
 }
 *:focus,
 *:active {
-    outline: none !important;
     -webkit-tap-highlight-color: transparent;
+    outline: none !important;
 }
 :root{
+    --color-blue:#47E5BC;
+    --color-blue-transparent:#47e5bb9a;
     --color-gray:#564D4A;
-    --color-green:#47E5BC;
+    --color-gray-transparent:#564d4aa2;
     --color-white:#F7F4F3;
+    --color-white-transparent:rgba(255, 255, 255, 0.567);
     --font-montserrat:"Montserrat", sans-serif;
     --font-roboto:"Roboto", sans-serif;
 }
 body{
     align-items: center;
     background-color: var(--color-gray);
+    color: var(--color-white);
     display: flex;
     flex-direction: column;
     font-family: var(--font-roboto);
     gap: 15px;
     padding: 10px 0 10px 0;
 }
+.blur{
+    filter: blur(3px);
+}
 
+/* TITLE */
 .title{
     color: var(--color-white);
     height: fit-content;
     text-align: center;
 }
 .title h1{
-    font-size: 2em;
+    font-size: min(2em,6vw);
     font-weight: 800;
 }
 
+/* DIALOG */
+dialog{
+    border: 0;
+    border-radius: 15px;
+    margin-top: 50px;
+    width: min(500px,90%);
+}
+dialog::backdrop{
+    background-color: var(--color-gray-transparent);
+}
+#form-new-game{
+    display: flex;
+    flex-direction: column;
+    font-size: min(6vw,1.8rem);
+    font-weight: 400;
+    gap: 15px;
+}
+#form-new-game h2{
+    font-size: min(6.4vw,2rem);
+    font-weight: 500;
+}
+#form-new-game input{
+    border: 1px solid var(--color-blue);
+    font-size: min(6vw,1em);
+    outline: 1px solid var(--color-blue);
+}
+#game-start{
+    align-self: center;
+    background-color: var(--color-blue);
+    border: 8px solid var(--color-blue);
+    color: var(--color-white);
+    cursor: pointer;
+    font-size: min(6.4vw,2rem);
+    font-weight: 900;
+    outline: 0;
+    padding: 5px 10px 5px 10px;
+    width: fit-content;
+}
+#game-start:focus{
+    border: 0;
+}
+
+/* Main */
+#main{
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+    gap: 1vw;
+}
+/* BOARD */
 #board{
     aspect-ratio: 1/1;
-    background-color: var(--color-green);
+    background-color: var(--color-blue);
     display: grid;
     gap: min(1vw,8px);
     grid-template-columns: repeat(3, 1fr);
@@ -54,16 +112,54 @@ body{
     justify-content: center;
 }
 
-#game-start{
-    background-color: var(--color-green);
+.restart-button{
+    background-color: var(--color-blue);
     border: 0;
     color: var(--color-white);
-    font-size: 1.5em;
+    cursor: pointer;
+    font-size: 1.2em;
     font-weight: 600;
 }
-
-#game-result{
+/* DISPLAY */
+#display{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 5px;
+}
+#round-result{
     color: var(--color-white);
     font-size: 1.2em;
     font-weight: 600;
+}
+.player{
+    border: 2px solid var(--color-white);
+    font-size: min(1.2em,5vw);
+    font-weight: 800;
+    padding: 5px;
+    text-align: center;
+}
+#scores{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* WINNER ANNOUNCEMENT */
+.display-off{
+    display: none;
+}
+.display-on{
+    align-items: center;
+    background-color: var(--color-white-transparent);
+    color: var(--color-gray);
+    display: flex;
+    font-size: 10vw;
+    font-weight: 900;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    backdrop-filter: blur(3px);
 }
