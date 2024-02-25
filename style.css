@@ -1,6 +1,11 @@
 *,*::after,*::after{
     box-sizing: border-box;
 }
+*:focus,
+*:active {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
 :root{
     --color-gray:#564D4A;
     --color-green:#47E5BC;
