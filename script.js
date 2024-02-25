@@ -111,6 +111,7 @@
             })
             _addClickEvents();
             setSymbol("X");
+            domGameResult.textContent="";
         }
         function _endGame(){
             board.forEach(element=>{
@@ -146,15 +147,15 @@
                 case null:
                     break;
                 case "tie":
-                    domResult.textContent="It was a tie";;
+                    domGameResult.textContent="It was a tie";
                     _endGame();
                     break;
                 case "X":
-                    domResult.textContent="player1 won : X";
+                    domGameResult.textContent="player1 won : X";
                     _endGame();
                     break;
                 case "O":
-                    domResult.textContent="player2 won : O";
+                    domGameResult.textContent="player2 won : O";
                     _endGame();
                     break;
                 default:
@@ -210,7 +211,7 @@
     let player1=player("X","player1");
     let player2=player("O","player2");
 
-    const startGameButton=document.getElementById("start-game");
-    startGameButton.addEventListener("click",playGame.startGame);
-    const domResult=document.getElementById("result");
+    const gameButtonStart=document.getElementById("game-start");
+    gameButtonStart.addEventListener("click",playGame.startGame);
+    const domGameResult=document.getElementById("game-result");
 })();
