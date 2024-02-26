@@ -10,7 +10,6 @@
         const domGameResult=document.getElementById("round-result");
         const gameButtonRestart=document.getElementById("game-restart");
         const gameButtonRestartNew=document.getElementById("game-new-restart");
-
         //Dialog New Game DOM
         const dialogNewGame=document.getElementById("pop-up");
         const form=document.getElementById("form-new-game");
@@ -20,7 +19,6 @@
         const gameButtonStartNew=document.getElementById("game-start");
         //Div Announce Winner
         const divDisplayWinner=document.getElementById("display-winner");
-
 
         gameButtonRestart.addEventListener("click",()=>playGame.startGame(Number(roundsInput.value)));
         gameButtonRestartNew.addEventListener("click",startNewGame);
@@ -37,19 +35,25 @@
         });
 
         divDisplayWinner.addEventListener("click",()=>{
-            divDisplayWinner.classList.remove("display-on");
-            divDisplayWinner.classList.add("display-off");
+            removeClass(divDisplayWinner,"display-on");
+            addClass(divDisplayWinner,"display-off");
         })
 
         startNewGame();
 
         function startNewGame(){
             dialogNewGame.showModal();
-            page.classList.add("blur")
+            addClass(page,"blur");
         }
 
         function changeTextContent(element,content){
             element.textContent=content;
+        }
+        function addClass(element,eClass){
+            element.classList.add(eClass);
+        }
+        function removeClass(element,eClass){
+            element.classList.remove(eClass);
         }
         function displayRoundResult(content){
             domGameResult.textContent=content;
@@ -66,13 +70,15 @@
                 }else{
                     changeTextContent(divDisplayWinner.querySelector(".text"),"IT WAS A TIE!");
                 }
-            divDisplayWinner.classList.add("display-on");
-            divDisplayWinner.classList.remove("display-off");
+            addClass(divDisplayWinner,"display-on");
+            removeClass(divDisplayWinner,"display-off");
         }
 
         return{
             displayRoundResult:displayRoundResult,
             changeTextContent:changeTextContent,
+            addClass:addClass,
+            removeClass:removeClass,
             renderScores:renderScores,
             announceWinner:announceWinner
         }
@@ -237,6 +243,8 @@
 
         function _emptyBoard(){
             board.forEach(element=>{
+                domManipulation.removeClass(element,"X");
+                domManipulation.removeClass(element,"O");
                 domManipulation.changeTextContent(element,"");
             })
         }
@@ -252,6 +260,7 @@
         function _setElementContent(event){
             if(currentSymbol!=null){
                 domManipulation.changeTextContent(event.target,currentSymbol);
+                domManipulation.addClass(event.target,currentSymbol)
                 _removeClickEvent(event.target)
                 const indexRow=event.target.id.charAt(4);
                 const indexColumn=event.target.id.charAt(5);
