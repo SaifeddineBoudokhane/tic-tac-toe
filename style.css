@@ -98,18 +98,17 @@ dialog::backdrop{
     justify-content: center;
     gap: 5px;
 }
-#round-indicator{
-    margin-right: 25px;
-}
 #indicator{
     font-family: var(--font-montserrat);
     text-align: center;
     font-weight: 700;
     background-color: var(--color-blue-transparent);
     align-self: center;
-    width: fit-content;
+    width: 40%;
     padding: 5px 10px 5px 10px;
-    font-size: min(1em,4vw);
+    font-size: min(1em,3vw);
+    display: flex;
+    justify-content: space-between;
 }
 #board{
     aspect-ratio: 1/1;
