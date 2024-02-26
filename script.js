@@ -281,10 +281,10 @@
                     break;
                 case "X":
                     if(player1.getSymbol()==roundResult){
-                        domManipulation.displayRoundResult("Player 1 Won! the last Round");
+                        domManipulation.displayRoundResult(player1.getName()+" Won! the last Round");
                         player1.incrementScore();
                     }else{
-                        domManipulation.displayRoundResult("Player 2 Won! the last Round");
+                        domManipulation.displayRoundResult(player2.getName()+" Won! the last Round");
                         player2.incrementScore();
                     }
                     domManipulation.renderScores();
@@ -293,10 +293,10 @@
                     break;
                 case "O":
                     if(player1.getSymbol()==roundResult){
-                        domManipulation.displayRoundResult("Player 1 Won! the last Round");
+                        domManipulation.displayRoundResult(player1.getName()+" Won! the last Round");
                         player1.incrementScore();
                     }else{
-                        domManipulation.displayRoundResult("Player 2 Won! the last Round");
+                        domManipulation.displayRoundResult(player2.getName()+" Won! the last Round");
                         player2.incrementScore();
                     }
                     domManipulation.renderScores();

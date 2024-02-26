@@ -113,6 +113,12 @@ dialog::backdrop{
     justify-content: center;
 }
 
+.X{
+    color: rgb(224, 84, 84);
+}
+.O{
+    color: rgb(55, 55, 108);
+}
 .restart-button{
     background-color: var(--color-blue);
     border: 0;
@@ -131,11 +137,6 @@ dialog::backdrop{
     gap: 5px;
     width: min(80vw,400px);
 }
-#round-result{
-    color: var(--color-white);
-    font-size: 1.2em;
-    font-weight: 600;
-}
 .player{
     border: 2px solid var(--color-white);
     font-size: min(1.2em,5vw);
@@ -148,11 +149,12 @@ dialog::backdrop{
     flex-direction: column;
     gap: 10px;
 }
-.X{
-    color: rgb(224, 84, 84);
-}
-.O{
-    color: rgb(55, 55, 108);
+#round-result{
+    border: 2px solid var(--color-white);
+    color: var(--color-white);
+    padding: 5px;
+    font-size: min(1.2em,5vw);
+    font-weight: 600;
 }
 /* WINNER ANNOUNCEMENT */
 .display-off{
