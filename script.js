@@ -5,7 +5,9 @@
         const page=document.querySelector("body");
         const turnSymbol=document.getElementById("turn-symbol");
         const roundIndicator=document.getElementById("round-indicator");
-        const maxRoundIndicator=document.getElementById("max-rounds")
+        const maxRoundIndicator=document.getElementById("max-rounds");
+        const player1SymbolIndicator=document.getElementById("player1-symbol-display");
+        const player2SymbolIndicator=document.getElementById("player2-symbol-display");
         const player1NameDisplay=document.getElementById("player1-name-display");
         const player2NameDisplay=document.getElementById("player2-name-display");
         const player1ScoreDisplay=document.getElementById("player1-score");
@@ -64,6 +66,13 @@
         function renderScores(){
             changeTextContent(player1ScoreDisplay,player1.getScore());
             changeTextContent(player2ScoreDisplay,player2.getScore());
+            _renderPlayerSymbol();
+        }
+        function _renderPlayerSymbol(){
+            changeTextContent(player1SymbolIndicator,player1.getSymbol());
+            player1SymbolIndicator.className=player1.getSymbol()
+            changeTextContent(player2SymbolIndicator,player2.getSymbol());
+            player2SymbolIndicator.className=player2.getSymbol()
         }
         function announceWinner(){
             if(player1.getScore()>player2.getScore()){
@@ -240,6 +249,8 @@
         function _endGame(){
             _removeAllClickEvents();
             setSymbol(null);
+            _switchPlayersSymbol();
+            domManipulation.renderScores();
             domManipulation.renderCurrentTurnSymbol(currentSymbol);
             domManipulation.announceWinner();
         }
@@ -309,8 +320,8 @@
                         domManipulation.displayRoundResult(player2.getName()+" Won! the last Round");
                         player2.incrementScore();
                     }
-                    domManipulation.renderScores();
                     _switchPlayersSymbol();
+                    domManipulation.renderScores();
                     _endRound();
                     break;
                 case "O":
@@ -321,8 +332,8 @@
                         domManipulation.displayRoundResult(player2.getName()+" Won! the last Round");
                         player2.incrementScore();
                     }
-                    domManipulation.renderScores();
                     _switchPlayersSymbol();
+                    domManipulation.renderScores();
                     _endRound();
                     break;
                 default:
