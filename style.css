@@ -98,7 +98,10 @@ dialog::backdrop{
     justify-content: center;
     gap: 5px;
 }
-#turn{
+#round-indicator{
+    margin-right: 25px;
+}
+#indicator{
     font-family: var(--font-montserrat);
     text-align: center;
     font-weight: 700;

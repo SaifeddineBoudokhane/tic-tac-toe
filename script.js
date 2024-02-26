@@ -4,6 +4,7 @@
         //Game DOM
         const page=document.querySelector("body");
         const turnSymbol=document.getElementById("turn-symbol");
+        const roundIndicator=document.getElementById("round-indicator");
         const player1NameDisplay=document.getElementById("player1-name-display");
         const player2NameDisplay=document.getElementById("player2-name-display");
         const player1ScoreDisplay=document.getElementById("player1-score");
@@ -78,11 +79,15 @@
             turnSymbol.className=symbol;
             turnSymbol.textContent=symbol;
         }
+        function setCurrentRoundNumber(round){
+            changeTextContent(roundIndicator,round);
+        }
         return{
             displayRoundResult:displayRoundResult,
             changeTextContent:changeTextContent,
             addClass:addClass,
             setCurrentTurnSymbol:setCurrentTurnSymbol,
+            setCurrentRoundNumber:setCurrentRoundNumber,
             removeClass:removeClass,
             renderScores:renderScores,
             announceWinner:announceWinner
@@ -199,6 +204,7 @@
         function startGame(newMaxRound){
             maxRound=newMaxRound;
             currentRound=1;
+            domManipulation.setCurrentRoundNumber(currentRound);
             _emptyBoard();
             _removeAllClickEvents();
             _addClickEvents();
@@ -214,6 +220,7 @@
         function _endRound(){
             _incrementRound();
             if(!_checkGameEnd()){
+                domManipulation.setCurrentRoundNumber(currentRound);
                 _emptyBoard();
                 _removeAllClickEvents();
                 _addClickEvents();
