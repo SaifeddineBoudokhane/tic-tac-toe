@@ -5,6 +5,7 @@
         const page=document.querySelector("body");
         const turnSymbol=document.getElementById("turn-symbol");
         const roundIndicator=document.getElementById("round-indicator");
+        const maxRoundIndicator=document.getElementById("max-rounds")
         const player1NameDisplay=document.getElementById("player1-name-display");
         const player2NameDisplay=document.getElementById("player2-name-display");
         const player1ScoreDisplay=document.getElementById("player1-score");
@@ -75,19 +76,23 @@
             addClass(divDisplayWinner,"display-on");
             removeClass(divDisplayWinner,"display-off");
         }
-        function setCurrentTurnSymbol(symbol){
+        function renderCurrentTurnSymbol(symbol){
             turnSymbol.className=symbol;
             turnSymbol.textContent=symbol;
         }
-        function setCurrentRoundNumber(round){
+        function renderCurrentRoundNumber(round){
             changeTextContent(roundIndicator,round);
+        }
+        function renderMaxRoundNumber(maxRound){
+            changeTextContent(maxRoundIndicator,maxRound)
         }
         return{
             displayRoundResult:displayRoundResult,
             changeTextContent:changeTextContent,
             addClass:addClass,
-            setCurrentTurnSymbol:setCurrentTurnSymbol,
-            setCurrentRoundNumber:setCurrentRoundNumber,
+            renderCurrentTurnSymbol:renderCurrentTurnSymbol,
+            renderCurrentRoundNumber:renderCurrentRoundNumber,
+            renderMaxRoundNumber,renderMaxRoundNumber,
             removeClass:removeClass,
             renderScores:renderScores,
             announceWinner:announceWinner
@@ -203,13 +208,14 @@
 
         function startGame(newMaxRound){
             maxRound=newMaxRound;
+            domManipulation.renderMaxRoundNumber(maxRound);
             currentRound=1;
-            domManipulation.setCurrentRoundNumber(currentRound);
+            domManipulation.renderCurrentRoundNumber(currentRound);
             _emptyBoard();
             _removeAllClickEvents();
             _addClickEvents();
             setSymbol("X");
-            domManipulation.setCurrentTurnSymbol(currentSymbol);
+            domManipulation.renderCurrentTurnSymbol(currentSymbol);
             player1.restartScore();
             player1.setSymbol("X");
             player2.restartScore();
@@ -220,12 +226,12 @@
         function _endRound(){
             _incrementRound();
             if(!_checkGameEnd()){
-                domManipulation.setCurrentRoundNumber(currentRound);
+                domManipulation.renderCurrentRoundNumber(currentRound);
                 _emptyBoard();
                 _removeAllClickEvents();
                 _addClickEvents();
                 setSymbol("X");
-                domManipulation.setCurrentTurnSymbol(currentSymbol);
+                domManipulation.renderCurrentTurnSymbol(currentSymbol);
             }else{
                 _endGame();
             }
@@ -234,7 +240,7 @@
         function _endGame(){
             _removeAllClickEvents();
             setSymbol(null);
-            domManipulation.setCurrentTurnSymbol(currentSymbol);
+            domManipulation.renderCurrentTurnSymbol(currentSymbol);
             domManipulation.announceWinner();
         }
 
@@ -281,7 +287,7 @@
                 const indexColumn=event.target.id.charAt(5);
                 roundResult=gameBoard.setBoardSymbol(indexRow,indexColumn,currentSymbol);
                 _switchSymbol();
-                domManipulation.setCurrentTurnSymbol(currentSymbol);
+                domManipulation.renderCurrentTurnSymbol(currentSymbol);
                 _checkRoundEnd();
             }
         }

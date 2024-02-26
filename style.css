@@ -104,7 +104,7 @@ dialog::backdrop{
     font-weight: 700;
     background-color: var(--color-blue-transparent);
     align-self: center;
-    width: 40%;
+    width: 50%;
     padding: 5px 10px 5px 10px;
     font-size: min(1em,3vw);
     display: flex;
