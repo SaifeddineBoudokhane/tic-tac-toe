@@ -3,6 +3,7 @@
     const domManipulation=(function(){
         //Game DOM
         const page=document.querySelector("body");
+        const turnSymbol=document.getElementById("turn-symbol");
         const player1NameDisplay=document.getElementById("player1-name-display");
         const player2NameDisplay=document.getElementById("player2-name-display");
         const player1ScoreDisplay=document.getElementById("player1-score");
@@ -73,11 +74,15 @@
             addClass(divDisplayWinner,"display-on");
             removeClass(divDisplayWinner,"display-off");
         }
-
+        function setCurrentTurnSymbol(symbol){
+            turnSymbol.className=symbol;
+            turnSymbol.textContent=symbol;
+        }
         return{
             displayRoundResult:displayRoundResult,
             changeTextContent:changeTextContent,
             addClass:addClass,
+            setCurrentTurnSymbol:setCurrentTurnSymbol,
             removeClass:removeClass,
             renderScores:renderScores,
             announceWinner:announceWinner
@@ -198,6 +203,7 @@
             _removeAllClickEvents();
             _addClickEvents();
             setSymbol("X");
+            domManipulation.setCurrentTurnSymbol(currentSymbol);
             player1.restartScore();
             player1.setSymbol("X");
             player2.restartScore();
@@ -212,6 +218,7 @@
                 _removeAllClickEvents();
                 _addClickEvents();
                 setSymbol("X");
+                domManipulation.setCurrentTurnSymbol(currentSymbol);
             }else{
                 _endGame();
             }
@@ -220,6 +227,7 @@
         function _endGame(){
             _removeAllClickEvents();
             setSymbol(null);
+            domManipulation.setCurrentTurnSymbol(currentSymbol);
             domManipulation.announceWinner();
         }
 
@@ -260,12 +268,13 @@
         function _setElementContent(event){
             if(currentSymbol!=null){
                 domManipulation.changeTextContent(event.target,currentSymbol);
-                domManipulation.addClass(event.target,currentSymbol)
-                _removeClickEvent(event.target)
+                domManipulation.addClass(event.target,currentSymbol);
+                _removeClickEvent(event.target);
                 const indexRow=event.target.id.charAt(4);
                 const indexColumn=event.target.id.charAt(5);
                 roundResult=gameBoard.setBoardSymbol(indexRow,indexColumn,currentSymbol);
                 _switchSymbol();
+                domManipulation.setCurrentTurnSymbol(currentSymbol);
                 _checkRoundEnd();
             }
         }

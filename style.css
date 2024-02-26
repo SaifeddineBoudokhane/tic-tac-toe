@@ -92,6 +92,22 @@ dialog::backdrop{
     width: min(100%,900px);
 }
 /* BOARD */
+#game{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+#turn{
+    font-family: var(--font-montserrat);
+    text-align: center;
+    font-weight: 700;
+    background-color: var(--color-blue-transparent);
+    align-self: center;
+    width: fit-content;
+    padding: 5px 10px 5px 10px;
+    font-size: min(1em,4vw);
+}
 #board{
     aspect-ratio: 1/1;
     background-color: var(--color-blue);
@@ -117,7 +133,7 @@ dialog::backdrop{
     color: rgb(224, 84, 84);
 }
 .O{
-    color: rgb(55, 55, 108);
+    color: rgb(0, 98, 255);
 }
 .restart-button{
     background-color: var(--color-blue);
