@@ -313,6 +313,7 @@
                 case "tie":
                     domManipulation.displayRoundResult("It was a tied Round");
                     _switchPlayersSymbol();
+domManipulation.renderScores();
                     _endRound();
                     break;
                 case "X":
