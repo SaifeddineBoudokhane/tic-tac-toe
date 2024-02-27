@@ -25,6 +25,9 @@
         //Div Announce Winner
         const divDisplayWinner=document.getElementById("display-winner");
 
+        player1NameInput.addEventListener("focus",()=>{player1NameInput.select()});
+        player2NameInput.addEventListener("focus",()=>{player2NameInput.select()});
+        roundsInput.addEventListener("focus",()=>{roundsInput.select()});
         gameButtonRestart.addEventListener("click",()=>playGame.startGame(Number(roundsInput.value)));
         gameButtonRestartNew.addEventListener("click",startNewGame);
         gameButtonStartNew.addEventListener("click",()=>{
